@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Recipe{% endblock %}
+
+{% block content %}
+<h2 class="section-title">
+    {% if form.instance.pk %}Edit Recipe{% else %}Add Recipe{% endif %}
+</h2>
+
+<div class="form-card">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Recipe Name</label>
+            {{ form.name }}
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            {{ form.category }}
+        </div>
+
+        <div class="form-group">
+            <label>Ingredients</label>
+            {{ form.ingredients }}
+        </div>
+
+        <div class="form-group">
+            <label>Instructions</label>
+            {{ form.instructions }}
+        </div>
+
+        <div class="form-group">
+            <label>Image Upload</label>
+            {{ form.image }}
+        </div>
+
+        <div class="form-group">
+            <label>OR Image URL</label>
+            {{ form.image_url }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Recipe</button>
+            <a href="{% url 'recipe_list' %}" class="btn cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    const name = document.querySelector('#id_name').value.trim();
+    const category = document.querySelector('#id_category').value.trim();
+
+    if (name.length < 3) {
+        alert("Recipe name must be at least 3 characters long.");
+        return false;
+    }
+
+    if (category === "") {
+        alert("Category is required.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+{% endblock %}

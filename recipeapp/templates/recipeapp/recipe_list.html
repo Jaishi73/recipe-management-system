@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="section-title">Recipes</h2>
+
+<form method="get">
+    <label>Filter by Category:</label>
+    <select name="category" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for cat in categories %}
+            <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>
+                {{ cat }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+    <div class="recipe-card">
+        {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" width="300">
+        {% elif recipe.image_url %}
+            <img src="{{ recipe.image_url }}" width="300">
+        {% endif %}
+
+        <div class="card-body">
+            <h3>{{ recipe.name }}</h3>
+            <span class="tag">{{ recipe.category }}</span>
+
+            <div class="card-actions">
+                <a class="btn view" href="{% url 'recipe_detail' recipe.id %}">View</a>
+                <a class="btn edit" href="{% url 'recipe_edit' recipe.id %}">Edit</a>
+                <a class="btn delete" href="{% url 'recipe_delete' recipe.id %}">Del</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
